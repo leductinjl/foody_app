@@ -13,6 +13,10 @@ interface WelcomeCardProps {
   content: string;
   image: keyof typeof Images; 
 }
+// Định nghĩa kiểu cho props của Pagination
+interface PaginationProps {
+  index: number;
+}
 
 // Định nghĩa kiểu cho tham số isActive
 const pageStyle = (isActive: boolean) =>
@@ -20,10 +24,6 @@ const pageStyle = (isActive: boolean) =>
     ? styles.page
     : { ...styles.page, backgroundColor: Colors.DEFAULT_GREY };
 
-// Định nghĩa kiểu cho props của Pagination
-interface PaginationProps {
-  index: number;
-}
 
 const Pagination: React.FC<PaginationProps> = ({ index }) => {
   return (
@@ -88,7 +88,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         <TouchableOpacity
           style={styles.gettingStartedButton}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('HomeScreen')}>
+          onPress={() => navigation.navigate('SignIn')}>
           <Text style={styles.gettingStartedButtonText}>Chọn món ngay</Text>
         </TouchableOpacity>
       ) : (
