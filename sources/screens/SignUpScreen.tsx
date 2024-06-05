@@ -1,31 +1,85 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Image } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
-import Separator from '../components/Separator';
 import Display from '../utils/Display';
-import ToggleButton from '../components/ToggleButton';
 import Images from '../constants/Images';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
+import Separator from '../components/Separator';
 
-interface SignInScreenProps {
+interface SignUpScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
+type InputState = 'valid' | 'invalid' | 'default';
+
+const inputStyle = (state: InputState) => {
+  switch (state) {
+    case 'valid':
+      return {
+        ...styles.inputContainer,
+        borderWidth: 1,
+        borderColor: Colors.SECONDARY_GREEN,
+      };
+    case 'invalid':
+      return {
+        ...styles.inputContainer,
+        borderWidth: 1,
+        borderColor: Colors.DEFAULT_RED,
+      };
+    default:
+      return styles.inputContainer;
+  }
+};
+
+const showMarker = (state: InputState) => {
+  switch (state) {
+    case 'valid':
+      return (
+        <AntDesign
+          name="checkcircleo"
+          color={Colors.SECONDARY_GREEN}
+          size={18}
+          style={{ marginLeft: 5 }}
+        />
+      );
+    case 'invalid':
+      return (
+        <AntDesign
+          name="closecircleo"
+          color={Colors.DEFAULT_RED}
+          size={18}
+          style={{ marginLeft: 5 }}
+        />
+      );
+    default:
+      return null;
+  }
+};
+
+const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [retypePassword, setRetypePassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [retypePasswordErrorMessage, setRetypePasswordErrorMessage] = useState('');
+  const [emailState, setEmailState] = useState<InputState>('default');
+  const [usernameState, setUsernameState] = useState<InputState>('default');
+  const [retypePasswordState, setRetypePasswordState] = useState<InputState>('default');
 
+  const register = () => {
 
-  const signIn = async () => {
-    setIsLoading(true);
     let user = {
       username,
+      email,
       password,
     };
   };
@@ -41,23 +95,23 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
       <View style={styles.headerContainer}>
         <Ionicons
           name="chevron-back-outline"
-          color={Colors.DEFAULT_BLACK}
           size={30}
           onPress={() => navigation.goBack()}
+          color={Colors.DEFAULT_BLACK}
         />
-        <Text style={styles.headerTitle}>Đăng nhập</Text>
+        <Text style={styles.headerTitle}>Đăng ký</Text>
       </View>
-      <Text style={styles.title}>Chào mừng</Text>
+      <Text style={styles.title}>Tạo tài khoản mới</Text>
       <Text style={styles.content}>
-        Hãy nhập tên tài khoản và mật khẩu, sau đó chọn món ăn bạn thích.
+        Nhập tên khoản, email và mật khẩu.
       </Text>
-      <View style={styles.inputContainer}>
+      <View style={inputStyle(usernameState)}>
         <View style={styles.inputSubContainer}>
           <Feather
             name="user"
             size={22}
             color={Colors.DEFAULT_GREY}
-            style={{marginRight: 10}}
+            style={{ marginRight: 10 }}
           />
           <TextInput
             placeholder="Nhập tên tài khoản"
@@ -66,19 +120,39 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
             style={styles.inputText}
             onChangeText={text => setUsername(text)}
           />
+          {showMarker(usernameState)}
         </View>
       </View>
-      <Separator height={15} />
+      <Text style={styles.errorMessage}>{usernameErrorMessage}</Text>
+      <View style={inputStyle(emailState)}>
+        <View style={styles.inputSubContainer}>
+          <Feather
+            name="mail"
+            size={22}
+            color={Colors.DEFAULT_GREY}
+            style={{ marginRight: 10 }}
+          />
+          <TextInput
+            placeholder="Nhập địa chỉ email"
+            placeholderTextColor={Colors.DEFAULT_GREY}
+            selectionColor={Colors.DEFAULT_GREY}
+            style={styles.inputText}
+            onChangeText={text => setEmail(text)}
+          />
+          {showMarker(emailState)}
+        </View>
+      </View>
+      <Text style={styles.errorMessage}>{emailErrorMessage}</Text>
       <View style={styles.inputContainer}>
         <View style={styles.inputSubContainer}>
           <Feather
             name="lock"
             size={22}
             color={Colors.DEFAULT_GREY}
-            style={{marginRight: 10}}
+            style={{ marginRight: 10 }}
           />
           <TextInput
-            secureTextEntry={isPasswordShow ? false : true}
+            secureTextEntry={!isPasswordShow}
             placeholder="Nhập mật khẩu"
             placeholderTextColor={Colors.DEFAULT_GREY}
             selectionColor={Colors.DEFAULT_GREY}
@@ -89,45 +163,49 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
             name={isPasswordShow ? 'eye' : 'eye-off'}
             size={22}
             color={Colors.DEFAULT_GREY}
-            style={{marginRight: 10}}
+            style={{ marginRight: 10 }}
             onPress={() => setIsPasswordShow(!isPasswordShow)}
           />
         </View>
       </View>
       <Text style={styles.errorMessage}>{errorMessage}</Text>
-      <View style={styles.forgotPasswordContainer}>
-        <View style={styles.toggleContainer}>
-          <ToggleButton size={0.5} />
-          <Text style={styles.rememberMeText}>Nhớ mật khẩu</Text>
+      <View style={inputStyle(retypePasswordState)}>
+        <View style={styles.inputSubContainer}>
+          <Feather
+            name="lock"
+            size={22}
+            color={Colors.DEFAULT_GREY}
+            style={{ marginRight: 10 }}
+          />
+          <TextInput
+            secureTextEntry={!isPasswordShow}
+            placeholder="Nhập lại mật khẩu"
+            placeholderTextColor={Colors.DEFAULT_GREY}
+            selectionColor={Colors.DEFAULT_GREY}
+            style={styles.inputText}
+            onChangeText={text => setRetypePassword(text)}
+          />
+          <Feather
+            name={isPasswordShow ? 'eye' : 'eye-off'}
+            size={22}
+            color={Colors.DEFAULT_GREY}
+            style={{ marginRight: 10 }}
+            onPress={() => setIsPasswordShow(!isPasswordShow)}
+          />
         </View>
-        <Text
-          style={styles.forgotPasswordText}
-          onPress={() => navigation.navigate('ForgotPassword')}>
-          Quên mật khẩu
-        </Text>
       </View>
-      <TouchableOpacity
-        style={styles.signinButton}
-        onPress={() => signIn()}
-        activeOpacity={0.8}>
-          <Text style={styles.signinButtonText}>Đăng nhập</Text>
+      <Text style={styles.errorMessage}>{retypePasswordErrorMessage}</Text>
+      <TouchableOpacity style={styles.signinButton} onPress={register}>
+        <Text style={styles.signupButtonText}>Tạo tài khoản</Text>
       </TouchableOpacity>
-      <View style={styles.signInContainer}>
-        <Text style={styles.accountText}>Chưa có tài khoản? </Text>
-        <Text
-          style={styles.signupText}
-          onPress={() => navigation.navigate('SignUp')}>
-          Đăng ký tài khoản
-        </Text>
-      </View>
       <Text style={styles.orText}>Hoặc</Text>
       <TouchableOpacity style={styles.facebookButton}>
         <View style={styles.socialButtonsContainer}>
           <View style={styles.signinButtonLogoContainer}>
             <Image source={Images.FACEBOOK} style={styles.signinButtonLogo} />
           </View>
-          <Text style={styles.socialSigninButtonText}>
-            Đăng nhập bằng Facebook
+          <Text style={styles.socialsignupButtonText}>
+            Đăng ký bằng Facebook
           </Text>
         </View>
       </TouchableOpacity>
@@ -136,7 +214,7 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
           <View style={styles.signinButtonLogoContainer}>
             <Image source={Images.GOOGLE} style={styles.signinButtonLogo} />
           </View>
-          <Text style={styles.socialSigninButtonText}>Đăng nhập bằng Google</Text>
+          <Text style={styles.socialsignupButtonText}>Đăng ký bằng Google</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -166,7 +244,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: Fonts.BALO_BOLD,
     lineHeight: 22 * 1.4,
-    marginTop: 50,
+    marginTop: 20,
     marginBottom: 10,
     marginHorizontal: 20,
     color: Colors.DEFAULT_BLACK,
@@ -200,25 +278,6 @@ const styles = StyleSheet.create({
     color: Colors.DEFAULT_BLACK,
     flex: 1,
   },
-  forgotPasswordContainer: {
-    marginHorizontal: 22,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  rememberMeText: {
-    marginLeft: 10,
-    fontSize: 14,
-    lineHeight: 14 * 1.4,
-    color: Colors.DEFAULT_GREY,
-    fontFamily: Fonts.BALO_MEDIUM,
-  },
-  forgotPasswordText: {
-    fontSize: 14,
-    lineHeight: 14 * 1.4,
-    color: Colors.DEFAULT_GREEN,
-    fontFamily: Fonts.BALO_MEDIUM,
-  },
   signinButton: {
     backgroundColor: Colors.DEFAULT_GREEN,
     borderRadius: 8,
@@ -226,33 +285,13 @@ const styles = StyleSheet.create({
     height: Display.setHeight(6),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 8,
   },
-  signinButtonText: {
+  signupButtonText: {
     fontSize: 18,
     lineHeight: 18 * 1.4,
     color: Colors.DEFAULT_WHITE,
     fontFamily: Fonts.BALO_MEDIUM,
-  },
-  signInContainer: {
-    marginHorizontal: 20,
-    justifyContent: 'center',
-    paddingVertical: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  accountText: {
-    fontSize: 15,
-    lineHeight: 15 * 1.4,
-    color: Colors.DEFAULT_BLACK,
-    fontFamily: Fonts.BALO_MEDIUM,
-  },
-  signupText: {
-    fontSize: 18,
-    lineHeight: 18 * 1.4,
-    color: Colors.DEFAULT_GREEN,
-    fontFamily: Fonts.BALO_MEDIUM,
-    marginLeft: 5,
   },
   orText: {
     fontSize: 15,
@@ -261,6 +300,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.BALO_MEDIUM,
     marginLeft: 5,
     alignSelf: 'center',
+    marginTop: 20,
   },
   facebookButton: {
     backgroundColor: Colors.FABEBOOK_BLUE,
@@ -279,9 +319,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  signinButtonLogo: {
-    height: 18,
-    width: 18,
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  socialsignupButtonText: {
+    color: Colors.DEFAULT_WHITE,
+    fontSize: 15,
+    lineHeight: 15 * 1.4,
+    fontFamily: Fonts.BALO_MEDIUM,
   },
   signinButtonLogoContainer: {
     backgroundColor: Colors.DEFAULT_WHITE,
@@ -290,21 +338,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 25,
   },
-  socialButtonsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  socialSigninButtonText: {
-    color: Colors.DEFAULT_WHITE,
-    fontSize: 15,
-    lineHeight: 15 * 1.4,
-    fontFamily: Fonts.BALO_MEDIUM,
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  signinButtonLogo: {
+    height: 18,
+    width: 18,
   },
   errorMessage: {
     fontSize: 14,
@@ -312,9 +348,8 @@ const styles = StyleSheet.create({
     color: Colors.DEFAULT_RED,
     fontFamily: Fonts.BALO_MEDIUM,
     marginHorizontal: 20,
-    marginTop: 3,
-    marginBottom: 10,
+    marginVertical: 3,
   },
 });
 
-export default SignInScreen;
+export default SignUpScreen;
