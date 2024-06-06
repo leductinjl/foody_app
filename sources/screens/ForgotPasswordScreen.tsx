@@ -28,7 +28,6 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
           onPress={() => navigation.goBack()}
           color={Colors.DEFAULT_BLACK}
         />
-        <Text style={styles.headerTitle}>Quên mật khẩu</Text>
       </View>
       <Text style={styles.title}>Quên mật khẩu</Text>
       <Text style={styles.content}>
@@ -43,7 +42,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
             style={{marginRight: 10}}
           />
           <TextInput
-            placeholder="Email"
+            placeholder="Nhập email đã đăng ký"
             placeholderTextColor={Colors.DEFAULT_GREY}
             selectionColor={Colors.DEFAULT_GREY}
             style={styles.inputText}
@@ -51,7 +50,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = ({ navigation 
         </View>
       </View>
       <TouchableOpacity style={styles.signinButton}>
-        <Text style={styles.signinButtonText}>Reset Password</Text>
+        <Text style={styles.signinButtonText}>Tạo mật khẩu mới</Text>
       </TouchableOpacity>
     </View>
   );
@@ -68,22 +67,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
-  headerTitle: {
-    fontSize: 20,
-    fontFamily: Fonts.BALO_MEDIUM,
-    lineHeight: 20 * 1.4,
-    width: Display.setWidth(80),
-    textAlign: 'center',
-    color: Colors.DEFAULT_BLACK
-  },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: Fonts.BALO_BOLD,
-    lineHeight: 20 * 1.4,
+    lineHeight: 22 * 1.4,
     marginTop: 50,
     marginBottom: 10,
     marginHorizontal: 20,
-    color: Colors.DEFAULT_BLACK
+    color: Colors.DEFAULT_BLACK,
+    textAlign: 'center'
   },
   content: {
     fontSize: 18,

@@ -99,7 +99,6 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
           onPress={() => navigation.goBack()}
           color={Colors.DEFAULT_BLACK}
         />
-        <Text style={styles.headerTitle}>Đăng ký</Text>
       </View>
       <Text style={styles.title}>Tạo tài khoản mới</Text>
       <Text style={styles.content}>
@@ -195,7 +194,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
         </View>
       </View>
       <Text style={styles.errorMessage}>{retypePasswordErrorMessage}</Text>
-      <TouchableOpacity style={styles.signinButton} onPress={register}>
+      <TouchableOpacity style={styles.signinButton} onPress={() => navigation.navigate("RegisterPhone")}>
         <Text style={styles.signupButtonText}>Tạo tài khoản</Text>
       </TouchableOpacity>
       <Text style={styles.orText}>Hoặc</Text>
@@ -232,22 +231,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
-  headerTitle: {
-    fontSize: 22,
-    fontFamily: Fonts.BALO_MEDIUM,
-    lineHeight: 22 * 1.4,
-    width: Display.setWidth(80),
-    textAlign: 'center',
-    color: Colors.DEFAULT_BLACK,
-  },
   title: {
     fontSize: 22,
     fontFamily: Fonts.BALO_BOLD,
     lineHeight: 22 * 1.4,
-    marginTop: 20,
+    marginTop: 50,
     marginBottom: 10,
     marginHorizontal: 20,
     color: Colors.DEFAULT_BLACK,
+    textAlign: 'center'
   },
   content: {
     fontSize: 18,

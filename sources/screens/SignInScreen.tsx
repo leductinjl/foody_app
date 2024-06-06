@@ -45,9 +45,8 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
           size={30}
           onPress={() => navigation.goBack()}
         />
-        <Text style={styles.headerTitle}>Đăng nhập</Text>
       </View>
-      <Text style={styles.title}>Chào mừng</Text>
+      <Text style={styles.title}>Đăng nhập tài khoản</Text>
       <Text style={styles.content}>
         Hãy nhập tên tài khoản và mật khẩu, sau đó chọn món ăn bạn thích.
       </Text>
@@ -154,14 +153,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
-  headerTitle: {
-    fontSize: 22,
-    fontFamily: Fonts.BALO_MEDIUM,
-    lineHeight: 22 * 1.4,
-    width: Display.setWidth(80),
-    textAlign: 'center',
-    color: Colors.DEFAULT_BLACK,
-  },
   title: {
     fontSize: 22,
     fontFamily: Fonts.BALO_BOLD,
@@ -170,6 +161,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 20,
     color: Colors.DEFAULT_BLACK,
+    textAlign: 'center'
   },
   content: {
     fontSize: 18,
@@ -208,14 +200,14 @@ const styles = StyleSheet.create({
   },
   rememberMeText: {
     marginLeft: 10,
-    fontSize: 14,
-    lineHeight: 14 * 1.4,
+    fontSize: 16,
+    lineHeight: 16 * 1.4,
     color: Colors.DEFAULT_GREY,
     fontFamily: Fonts.BALO_MEDIUM,
   },
   forgotPasswordText: {
-    fontSize: 14,
-    lineHeight: 14 * 1.4,
+    fontSize: 18,
+    lineHeight: 18 * 1.4,
     color: Colors.DEFAULT_GREEN,
     fontFamily: Fonts.BALO_MEDIUM,
   },
