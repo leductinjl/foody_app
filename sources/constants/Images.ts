@@ -5,4 +5,16 @@ export default {
     FAVORITE: require('../assets/images/favorite.png'),
     FACEBOOK: require('../assets/images/facebook.png'),
     GOOGLE: require('../assets/images/google.png'),
+    GA: require('../assets/images/ga.png'),
+    TRAICAY: require('../assets/images/nuoctraicay.png'),
+    CAFE: require('../assets/images/cafe.png'),
+    MI: require('../assets/images/mi.png'),
+    TRASUA: require('../assets/images/trasua.png'),
+    GOICUON: require('../assets/images/goicuon.png'),
+    BANHMI: require('../assets/images/banhmi.png'),
+    DELIVERY_CHARGE: require('../assets/images/quicks.png'),
+    DELIVERY_TIME: require('../assets/images/time.png'),
+    EMPTY_CART: require('../assets/images/emptycart.png'),
+    AVATAR: require('../assets/images/panda.png'),
+    MARKER: require('../assets/images/location.png')
 };

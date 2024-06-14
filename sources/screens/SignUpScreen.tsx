@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Image, ActivityIndicator, Modal } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,6 +9,7 @@ import Fonts from '../constants/Fonts';
 import Display from '../utils/Display';
 import Images from '../constants/Images';
 import Separator from '../components/Separator';
+import AuthenticationService from '../services/AuthenticationService';
 
 interface SignUpScreenProps {
   navigation: NavigationProp<ParamListBase>;
@@ -74,14 +75,49 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
   const [emailState, setEmailState] = useState<InputState>('default');
   const [usernameState, setUsernameState] = useState<InputState>('default');
   const [retypePasswordState, setRetypePasswordState] = useState<InputState>('default');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const register = () => {
-
     let user = {
       username,
       email,
       password,
     };
+    setIsLoading(true);
+    AuthenticationService.register(user).then(response => {
+      setIsLoading(false);
+      if (response?.status) {
+        setIsModalVisible(true);
+      } else {
+        setErrorMessage(response?.message);
+      }
+    });
+    // navigation.navigate('RegisterPhone')
+  };
+
+  const checkUserExist = async (type: string, value: string) => {
+    if (value?.length > 0) {
+      AuthenticationService.checkUserExist(type, value).then(response => {
+        if (response?.status) {
+          type === 'email' && emailErrorMessage
+            ? setEmailErrorMessage('')
+            : null;
+
+          type === 'username' && usernameErrorMessage
+            ? setUsernameErrorMessage('')
+            : null;
+          type === 'email' ? setEmailState('valid') : null;
+          type === 'username' ? setUsernameState('valid') : null;
+        } else {
+          type === 'email' ? setEmailErrorMessage(response?.message) : null;
+          type === 'username'
+            ? setUsernameErrorMessage(response?.message)
+            : null;
+          type === 'email' ? setEmailState('invalid') : null;
+          type === 'username' ? setUsernameState('invalid') : null;
+        }
+      });
+    }
   };
 
   return (
@@ -194,8 +230,12 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
         </View>
       </View>
       <Text style={styles.errorMessage}>{retypePasswordErrorMessage}</Text>
-      <TouchableOpacity style={styles.signinButton} onPress={() => navigation.navigate("RegisterPhone")}>
-        <Text style={styles.signupButtonText}>Tạo tài khoản</Text>
+      <TouchableOpacity style={styles.signinButton} onPress={() => register()}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.DEFAULT_WHITE} />
+        ) : (
+          <Text style={styles.signupButtonText}>Đăng ký</Text>
+        )}
       </TouchableOpacity>
       <Text style={styles.orText}>Hoặc</Text>
       <TouchableOpacity style={styles.facebookButton}>
@@ -216,6 +256,29 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ navigation }) => {
           <Text style={styles.socialsignupButtonText}>Đăng ký bằng Google</Text>
         </View>
       </TouchableOpacity>
+
+      {/* Success Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Đăng ký thành công!</Text>
+            <TouchableOpacity
+              style={styles.okButton}
+              onPress={() => {
+                setIsModalVisible(false);
+                navigation.navigate('SignIn'); // Change 'Home' to your desired screen
+              }}
+            >
+              <Text style={styles.okButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -341,6 +404,38 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.BALO_MEDIUM,
     marginHorizontal: 20,
     marginVertical: 3,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    width: '80%',
+    backgroundColor: Colors.DEFAULT_WHITE,
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    fontFamily: Fonts.BALO_MEDIUM,
+    color: Colors.DEFAULT_BLACK,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  okButton: {
+    backgroundColor: Colors.DEFAULT_GREEN,
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  okButtonText: {
+    fontSize: 16,
+    color: Colors.DEFAULT_WHITE,
+    fontFamily: Fonts.BALO_MEDIUM,
   },
 });
 

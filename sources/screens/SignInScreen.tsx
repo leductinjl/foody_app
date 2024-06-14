@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, TextInput, TouchableOpacity, Image, ActivityIndicator, Modal } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
@@ -9,6 +9,10 @@ import ToggleButton from '../components/ToggleButton';
 import Images from '../constants/Images';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import AuthenticationService from '../services/AuthenticationService';
+import { useDispatch, useSelector } from 'react-redux';
+import StorageService from '../services/StorageService';
+import GeneralAction from '../actions/GeneralAction';
 
 interface SignInScreenProps {
   navigation: NavigationProp<ParamListBase>;
@@ -20,7 +24,9 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false); // State for modal visibility
 
+  const dispatch = useDispatch();
 
   const signIn = async () => {
     setIsLoading(true);
@@ -28,6 +34,17 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
       username,
       password,
     };
+    AuthenticationService.login(user).then(response => {
+      setIsLoading(false);
+      if (response?.status) {
+        StorageService.setToken(response?.data).then(() => {
+          dispatch(GeneralAction.setToken(response?.data));
+          setIsModalVisible(true); // Show modal on successful login
+        });
+      } else {
+        setErrorMessage(response?.message);
+      }
+    });
   };
 
   return (
@@ -109,7 +126,11 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
         style={styles.signinButton}
         onPress={() => signIn()}
         activeOpacity={0.8}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.DEFAULT_WHITE} />
+        ) : (
           <Text style={styles.signinButtonText}>Đăng nhập</Text>
+        )}
       </TouchableOpacity>
       <View style={styles.signInContainer}>
         <Text style={styles.accountText}>Chưa có tài khoản? </Text>
@@ -138,6 +159,28 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
           <Text style={styles.socialSigninButtonText}>Đăng nhập bằng Google</Text>
         </View>
       </TouchableOpacity>
+
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Đăng nhập thành công!</Text>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {
+                setIsModalVisible(false);
+                navigation.navigate('Home'); // Navigate to home screen or any other screen
+              }}
+            >
+              <Text style={styles.closeButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -306,6 +349,36 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 3,
     marginBottom: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: Colors.DEFAULT_WHITE,
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    fontFamily: Fonts.BALO_MEDIUM,
+    color: Colors.DEFAULT_BLACK,
+    marginBottom: 20,
+  },
+  closeButton: {
+    backgroundColor: Colors.DEFAULT_GREEN,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    fontSize: 16,
+    fontFamily: Fonts.BALO_MEDIUM,
+    color: Colors.DEFAULT_WHITE,
   },
 });
 

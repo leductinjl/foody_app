@@ -7,6 +7,9 @@ import Display from '../utils/Display';
 import Fonts from '../constants/Fonts';
 import WelcomeCard from '../components/WelcomeCard';
 import Images from '../constants/Images';
+import { useDispatch } from 'react-redux';
+import GeneralAction from '../actions/GeneralAction';
+import StorageService from '../services/StorageService';
 
 interface WelcomeCardProps {
   title: string;
@@ -58,6 +61,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
     });
   };
 
+  const dispatch = useDispatch();
+
+  const navigate = () => {
+    StorageService.setFirstTimeUse().then(() => {
+      dispatch(GeneralAction.setIsFirstTimeUse());
+    });
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -88,7 +99,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ navigation }) => {
         <TouchableOpacity
           style={styles.gettingStartedButton}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('SignIn')}>
+          onPress={() => navigate()}>
           <Text style={styles.gettingStartedButtonText}>Chọn món ngay</Text>
         </TouchableOpacity>
       ) : (

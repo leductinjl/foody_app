@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, StatusBar, Image } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import Display from '../utils/Display';
@@ -11,12 +11,7 @@ interface SplashScreenProps {
 }
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Welcome');
-    }, 1500);
-  }, [navigation]);
-
+  
   return (
     <View style={styles.container}>
       <StatusBar
