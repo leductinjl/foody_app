@@ -72,3 +72,40 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+*.apk
+*.aab
+*.ipa
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Cache
+.cache/
+.temp/
+.tmp/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Metro
+.metro-health-check*

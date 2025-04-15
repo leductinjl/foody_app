@@ -1,80 +1,138 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🍔 Foody - Food Delivery Mobile App
 
-# Getting Started
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/)
+[![React Navigation](https://img.shields.io/badge/React_Navigation-6B52AE?style=for-the-badge&logo=react&logoColor=white)](https://reactnavigation.org/)
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+A modern food delivery application built with React Native, designed to provide users with a seamless food ordering experience. Foody brings your favorite restaurants and dishes right to your fingertips.
 
-## Step 1: Start the Metro Server
+![Home Screen](images/home.jpg)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 🚀 Features
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- **User Authentication**
+  - Secure login and registration system
+  - Social media integration
+  - Profile management
 
+- **Food Discovery**
+  - Browse restaurants and food items
+  - Search functionality with filters
+  - Detailed food information and reviews
+
+- **Order Management**
+  - Add items to cart
+  - Customize orders
+  - Track order status
+  - Order history
+
+- **Favorites & Recommendations**
+  - Save favorite restaurants and dishes
+  - Personalized recommendations
+  - Recent orders
+
+## 📱 Screenshots
+
+| Login | Register | Home |
+|-------|----------|------|
+| ![Login](images/login.jpg) | ![Register](images/register.jpg) | ![Home](images/home.jpg) |
+
+| Search | Food Detail | Shop |
+|--------|-------------|------|
+| ![Search](images/search.jpg) | ![Food Detail](images/food_detail.jpg) | ![Shop](images/shop.jpg) |
+
+| Favorites | Checkout |
+|-----------|----------|
+| ![Favorites](images/favorite.jpg) | ![Checkout](images/checkout.jpg) |
+
+## 🛠️ Technical Stack
+
+- **Frontend**
+  - React Native
+  - TypeScript
+  - Redux for state management
+  - React Navigation
+  - Axios for API calls
+
+- **Styling**
+  - React Native Paper
+  - Custom components
+  - Responsive design
+
+- **Development Tools**
+  - ESLint
+  - Prettier
+  - Jest for testing
+
+## 🎯 Project Goals
+
+This project was developed with the following objectives:
+- Create a user-friendly food delivery experience
+- Implement modern mobile app development practices
+- Showcase clean code architecture
+- Demonstrate problem-solving skills
+- Learn and apply best practices in React Native development
+
+## 💻 Installation
+
+1. Clone the repository
 ```bash
-# using npm
-npm start
+git clone https://github.com/leductinjl/foody_app.git
+```
 
-# OR using Yarn
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Start the development server
+```bash
+npm start
+# or
 yarn start
 ```
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
+4. Run on iOS/Android
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
 npm run ios
-
-# OR using Yarn
-yarn ios
+# or
+npm run android
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## 📚 Learning Outcomes
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Through this project, I have gained:
+- Hands-on experience with React Native development
+- Understanding of mobile app architecture
+- State management with Redux
+- API integration and data handling
+- UI/UX design principles
+- Problem-solving and debugging skills
+- Version control with Git
+- Team collaboration practices
 
-## Step 3: Modifying your App
+## 🔍 Future Improvements
 
-Now that you have successfully run the app, let's modify it.
+- Implement real-time order tracking
+- Add payment gateway integration
+- Enhance user profile features
+- Optimize app performance
+- Add more customization options
+- Implement push notifications
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## 🤝 Contributing
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Congratulations! :tada:
+## 📄 License
 
-You've successfully run and modified your React Native App. :partying_face:
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Now what?
+## 📞 Contact
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
-# foody_app
+For any inquiries or feedback, please reach out to:
+- Email: [leductin.ld@gmail.com](mailto:leductin.ld@gmail.com)
+- GitHub: [leductinjl](https://github.com/leductinjl) 
