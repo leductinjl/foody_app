@@ -7,7 +7,6 @@
 
 A modern food delivery application built with React Native, designed to provide users with a seamless food ordering experience. Foody brings your favorite restaurants and dishes right to your fingertips.
 
-![Home Screen](images/home.jpg)
 
 ## 🚀 Features
 
